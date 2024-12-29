@@ -87,11 +87,12 @@ function InputForm() {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit}>
-        <label>
+    <div className="form-container items-center">
+      <form onSubmit={handleSubmit} className=" mx-10 px-10">
+        <label className="block text-gray-950 text-sm font-bold mb-2 pr-8">
           Pressure:
           <input
+            className="border border-gray-200 p-1 rounded-md mx-1" 
             type="number"
             step="0.01"
             name="pressure"
@@ -100,9 +101,10 @@ function InputForm() {
             required
           />
         </label>
-        <label>
+        <label className="block text-gray-950 text-sm font-bold mb-2">
           Temperature:
           <input
+            className="border border-gray-200 p-1 rounded-md mx-1"
             type="number"
             step="0.01"
             name="temperature"
@@ -111,9 +113,10 @@ function InputForm() {
             required
           />
         </label>
-        <label>
+        <label className="block text-gray-950 text-sm font-bold mb-2">
           Vibration:
           <input
+            className="border border-gray-200 p-1 rounded-md mx-1"
             type="number"
             step="0.01"
             name="vibration"
@@ -122,9 +125,10 @@ function InputForm() {
             required
           />
         </label>
-        <label>
+        <label className="block text-gray-950 text-sm font-bold mb-2"> 
           Volume Flow:
           <input
+            className="border border-gray-200 p-1 rounded-md mx-1"
             type="number"
             step="0.01"
             name="volume_flow"
@@ -133,9 +137,10 @@ function InputForm() {
             required
           />
         </label>
-        <label>
+        <label className="block text-gray-950 text-sm font-bold mb-2 mr-8 ">
           Motor Power:
           <input
+            className="border border-gray-200 p-1 rounded-md mx-1"
             type="number"
             step="0.01"
             name="motor_power"
@@ -144,15 +149,15 @@ function InputForm() {
             required
           />
         </label>
-        <button type="submit">Get Prediction</button>
+        <button className="bg-blue-400 text-white font-bold py-2 px-4 rounded items-center my-10" type="submit">Get Prediction</button>
       </form>
 
       {error && <p className="error">{error}</p>}
 
 
       {result && (
-        <div className="result">
-          <h3>Prediction Results:</h3>
+        <div className="result my-2 mx-20">
+          <div className="text-lg my-5">Prediction Results:</div>
           <p>
             <strong>Cooler Condition:</strong> {mapCoolerCondition(result.cooler_condition)} 
             (Code: {result.cooler_condition})
@@ -171,6 +176,35 @@ function InputForm() {
           </p>
         </div>
       )}
+
+<div className="guidance my-5 mx-10 p-4 border rounded bg-gray-100 text-sm">
+        <h3 className="font-bold mb-2">Guidance for Target Condition Values:</h3>
+        <p><strong>Cooler condition / %:</strong></p>
+        <ul>
+          <li>3: Close to total failure</li>
+          <li>20: Reduced efficiency</li>
+          <li>100: Full efficiency</li>
+        </ul>
+        <p><strong>Internal pump leakage:</strong></p>
+        <ul>
+          <li>0: No leakage</li>
+          <li>1: Weak leakage</li>
+          <li>2: Severe leakage</li>
+        </ul>
+        <p><strong>Hydraulic accumulator / bar:</strong></p>
+        <ul>
+          <li>130: Optimal pressure</li>
+          <li>115: Slightly reduced pressure</li>
+          <li>100: Severely reduced pressure</li>
+          <li>90: Close to total failure</li>
+        </ul>
+        <p><strong>Stable flag:</strong></p>
+        <ul>
+          <li>0: Conditions were stable</li>
+          <li>1: Static conditions might not have been reached yet</li>
+        </ul>
+      </div>
+      
 
       {/* {result && (
         <div className="result">
