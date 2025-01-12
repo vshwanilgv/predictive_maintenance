@@ -10,6 +10,18 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 
+# models={
+#     "combined_model": joblib.load("models/combined_model.pkl")
+# }
+
+# scalers={
+#     "combined_model": joblib.load("models/combined_scaler.pkl")
+# }
+
+# encoders={
+#     "combined_model": joblib.load("models/combined_label_encoder.pkl")
+# }
+
 models = {
     "cooler_condition": joblib.load("models/cooler_condition_model.pkl"),
     "machine_stability": joblib.load("models/machine_stability_model.pkl"),
