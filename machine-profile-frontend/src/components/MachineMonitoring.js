@@ -130,7 +130,7 @@ const MachineMonitoring = () => {
         )}
       </section>
 
-      <section style={{ marginBottom: "40px" }}>
+      {/* <section style={{ marginBottom: "40px" }}>
         <div className="text-blue-900">Manual Data Entry</div>
         <form onSubmit={handleSubmit}>
           {Object.keys(manualInput).map((key) => (
@@ -175,7 +175,7 @@ const MachineMonitoring = () => {
         ) : (
           <div className="mx-8" >No manual data submitted yet.</div>
         )}
-      </section>
+      </section> */}
     </div>
   );
 };

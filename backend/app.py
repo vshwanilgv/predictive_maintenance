@@ -45,7 +45,7 @@ encoders = {
 
 BROKER = "broker.hivemq.com"
 PORT = 1883
-TOPIC = "sensor/data"
+TOPIC = "sensor/data/vishwani"
 latest_data = {}
 
 def process_sensor_data(data):
