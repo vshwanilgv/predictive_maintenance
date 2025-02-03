@@ -38,56 +38,102 @@ const MachineMonitoring = () => {
     setManualInput((prevInput) => ({ ...prevInput, [name]: value }));
   };
 
-  const mapCoolerCondition = (value) => {
-    switch (value) {
-      case 3:
-        return "Close to total failure";
-      case 20:
-        return "Reduced efficiency";
-      case 100:
-        return "Full efficiency";
-      default:
-        return "Unknown condition";
+  // const mapCoolerCondition = (value) => {
+  //   switch (value) {
+  //     case 3:
+  //       return "Close to total failure";
+  //     case 20:
+  //       return "Reduced efficiency";
+  //     case 100:
+  //       return "Full efficiency";
+  //     default:
+  //       return "Unknown condition";
+  //   }
+  // };
+
+  // const mapInternalPumpLeakage = (value) => {
+  //   switch (value) {
+  //     case 0:
+  //       return "No leakage";
+  //     case 1:
+  //       return "Weak leakage";
+  //     case 2:
+  //       return "Severe leakage";
+  //     default:
+  //       return "Unknown condition";
+  //   }
+  // };
+
+  // const mapHydraulicAccumulator = (value) => {
+  //   switch (value) {
+  //     case 130:
+  //       return "Optimal pressure";
+  //     case 115:
+  //       return "Slightly reduced pressure";
+  //     case 100:
+  //       return "Severely reduced pressure";
+  //     case 90:
+  //       return "Close to total failure";
+  //     default:
+  //       return "Unknown condition";
+  //   }
+  // };
+
+  // const mapStableFlag = (value) => {
+  //   switch (value) {
+  //     case 0:
+  //       return "Conditions were stable";
+  //     case 1:
+  //       return "Static conditions might not have been reached yet";
+  //     default:
+  //       return "Unknown flag";
+  //   }
+  // };
+
+  const getStatusBadge = (status) => {
+    let color = "bg-blue"; 
+    let text = "Unknown";
+
+    if (status === "Normal") {
+      color = "bg-green-500";
+      text = "✅ Normal";
+    } else if (status === "Warning") {
+      color = "bg-yellow-500";
+      text = "⚠️ Warning";
+    } else if (status === "Critical") {
+      color = "bg-red-500";
+      text = "❌ Critical";
     }
+
+    return <span className={`px-8 py-1 text-blue-800 rounded-lg ${color}`}>{text}</span>;
+  };
+
+  const mapCoolerCondition = (value) => {
+    if (value === 100) return { label: "Full efficiency", status: "Normal" };
+    if (value === 20) return { label: "Reduced efficiency", status: "Warning" };
+    if (value === 3) return { label: "Close to total failure", status: "Critical" };
+    return { label: "Unknown condition", status: "Unknown" };
   };
 
   const mapInternalPumpLeakage = (value) => {
-    switch (value) {
-      case 0:
-        return "No leakage";
-      case 1:
-        return "Weak leakage";
-      case 2:
-        return "Severe leakage";
-      default:
-        return "Unknown condition";
-    }
+    if (value === 0) return { label: "No leakage", status: "Normal" };
+    if (value === 1) return { label: "Weak leakage", status: "Warning" };
+    if (value === 2) return { label: "Severe leakage", status: "Critical" };
+    return { label: "Unknown condition", status: "Unknown" };
   };
 
   const mapHydraulicAccumulator = (value) => {
-    switch (value) {
-      case 130:
-        return "Optimal pressure";
-      case 115:
-        return "Slightly reduced pressure";
-      case 100:
-        return "Severely reduced pressure";
-      case 90:
-        return "Close to total failure";
-      default:
-        return "Unknown condition";
-    }
+    if (value === 130) return { label: "Optimal pressure", status: "Normal" };
+    if (value === 115) return { label: "Slightly reduced pressure", status: "Warning" };
+    if (value === 100) return { label: "Severely reduced pressure", status: "Critical" };
+    if (value === 90) return { label: "Close to total failure", status: "Critical" };
+    return { label: "Unknown condition", status: "Unknown" };
   };
-
+ 
   const mapStableFlag = (value) => {
-    switch (value) {
-      case 0:
-        return "Conditions were stable";
-      case 1:
-        return "Static conditions might not have been reached yet";
-      default:
-        return "Unknown flag";
-    }
+    if (value === 0) return { label: "Conditions were stable", status: "Normal" };
+    if (value === 1) return { label: "Static conditions might not have been reached yet", status:"Warning"};
+    return { label: "Unknown condition", status:"Unknown"};
   };
 
   const renderPredictions = (predictions) => (
@@ -122,8 +168,27 @@ const MachineMonitoring = () => {
             <pre style={{ backgroundColor: "#f0f0f0", padding: "10px" }}>
               {JSON.stringify(iotData.sensor_data, null, 2)}
             </pre>
-            <div className="my-2">Predictions</div>
-            {renderPredictions(iotData.predictions)}
+            {/* <div className="my-2">Predictions</div>
+            {renderPredictions(iotData.predictions)} */}
+            <div className="my-2 mx-8 py-5">
+            <div className="mb-4">
+              <strong>Cooler Condition:</strong> {mapCoolerCondition(iotData.predictions.cooler_condition).label}{" "}
+              {getStatusBadge(mapCoolerCondition(iotData.predictions.cooler_condition).status)}
+            </div>
+            <div className="mb-4">
+              <strong>Internal Pump Leakage:</strong> {mapInternalPumpLeakage(iotData.predictions.internal_pump_leakage).label}{" "}
+              {getStatusBadge(mapInternalPumpLeakage(iotData.predictions.internal_pump_leakage).status)}
+            </div>
+            <div className="mb-4">
+              <strong>Hydraulic Accumulator:</strong> {mapHydraulicAccumulator(iotData.predictions.hydraulic_accumulator).label}{" "}
+              {getStatusBadge(mapHydraulicAccumulator(iotData.predictions.hydraulic_accumulator).status)}
+            </div>
+            <div className="mb-4">
+              <strong>Stability:</strong> {mapStableFlag(iotData.predictions.stable_flag).label}{" "}
+              {getStatusBadge(mapStableFlag(iotData.predictions.stable_flag).status)}
+            </div>
+          </div>
+
           </div>
         ) : (
           <p>No data received from sensors yet.</p>
